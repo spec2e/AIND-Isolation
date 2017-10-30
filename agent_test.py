@@ -27,6 +27,8 @@ class IsolationTest(unittest.TestCase):
         game.apply_move((2,1))
         game.apply_move((2,0))
 
+#        print("min", min(-1, game))
+
         time_left = lambda : 10.0
         player1.get_move(game, time_left)
 
