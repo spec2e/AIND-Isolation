@@ -24,10 +24,11 @@ class IsolationTest(unittest.TestCase):
         player2 = game_agent.MinimaxPlayer()
         game = isolation.Board(player1, player2)
 
-        g1 = game.apply_move((2,1))
-        g2 = game.apply_move((2,0))
+        game.apply_move((2,1))
+        game.apply_move((2,0))
 
-        player1.get_move(g1, 2000.0)
+        time_left = lambda : 10.0
+        player1.get_move(game, time_left)
 
 if __name__ == '__main__':
     unittest.main()

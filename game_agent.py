@@ -211,12 +211,11 @@ class MinimaxPlayer(IsolationPlayer):
                 testing.
         """
 
-        print("Whoohoooo.... HIT")
-
-        if self.time_left < self.TIMER_THRESHOLD:
+        if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        return (-1, -1)
+        legal_moves = game.get_legal_moves()
+        return legal_moves[0]
 
 
 class AlphaBetaPlayer(IsolationPlayer):
