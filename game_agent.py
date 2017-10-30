@@ -34,8 +34,9 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+
+    print("custom_score")
+    return float(0)
 
 
 def custom_score_2(game, player):
@@ -209,11 +210,13 @@ class MinimaxPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
-        if self.time_left() < self.TIMER_THRESHOLD:
+
+        print("Whoohoooo.... HIT")
+
+        if self.time_left < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        return (-1, -1)
 
 
 class AlphaBetaPlayer(IsolationPlayer):
