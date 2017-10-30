@@ -35,15 +35,10 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(own_moves - opp_moves)
+    f = float(own_moves - opp_moves)
+    return f
 
 
 
@@ -226,7 +221,6 @@ class MinimaxPlayer(IsolationPlayer):
         current_best_move = None
 
         for action in game.get_legal_moves():
-
             v = self.min_value(game.forecast_move(action), depth)
 
             if v > current_best:
@@ -262,8 +256,7 @@ class MinimaxPlayer(IsolationPlayer):
         v = float("inf")
 
         for action in gameState.get_legal_moves():
-            v = min(v, self.max_value(gameState.forecast_move(action), --depth))
-
+            v = min(v, self.max_value(gameState.forecast_move(action), depth))
 
         return v
 
@@ -280,13 +273,11 @@ class MinimaxPlayer(IsolationPlayer):
             return self.score(gameState, self)
 
         v = float("-inf")
-
+        depth -= 1
         for action in gameState.get_legal_moves():
-            v = max(v, self.min_value(gameState.forecast_move(action), --depth))
+            v = max(v, self.min_value(gameState.forecast_move(action), depth))
 
         return v
-
-
 
 
 class AlphaBetaPlayer(IsolationPlayer):
