@@ -20,12 +20,19 @@ class IsolationTest(unittest.TestCase):
 
     def test_minimax(self):
 
-        player1 = game_agent.MinimaxPlayer()
-        player2 = game_agent.MinimaxPlayer()
+        player1 = game_agent.MinimaxPlayer(search_depth=1)
+        player2 = game_agent.MinimaxPlayer(search_depth=1)
         game = isolation.Board(player1, player2)
-
+        print(game.to_string())
+        print("moves", game.get_legal_moves())
+        print()
         game.apply_move((2,1))
         game.apply_move((2,0))
+
+
+        print(game.to_string())
+        print("moves", game.get_legal_moves(player=player1))
+        print()
 
 #        print("min", min(-1, game))
 
