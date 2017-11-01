@@ -390,20 +390,16 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         for action in game.get_legal_moves():
 
-            v = self.max_value(game.forecast_move(action), depth -1, alpha=alpha, beta=beta)
+            v = self.min_value(game.forecast_move(action), depth -1, alpha=alpha, beta=beta)
 
             if v > current_best:
                 current_best = v
                 current_best_move = action
 
+            # Alpha must be updated so we know the current best score down in the other branches
+            alpha = max(alpha, current_best)
+
         return current_best_move
-
-    def terminal_test(self, game):
-
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-
-        return not bool(game.get_legal_moves())
 
     def min_value(self, game, depth, alpha, beta):
         """ Return the value for a win (inf) if the game is over,
@@ -412,9 +408,6 @@ class AlphaBetaPlayer(IsolationPlayer):
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
-
-        if self.terminal_test(game):
-            return 1
 
         if depth == 0:
             return self.score(game, self)
@@ -437,9 +430,6 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
-
-        if self.terminal_test(game):
-            return -1
 
         if depth == 0:
             return self.score(game, self)
