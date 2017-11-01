@@ -133,8 +133,6 @@ class MinimaxPlayer(IsolationPlayer):
         """Search for the best move from the available legal moves and return a
         result before the time limit expires.
 
-        **************  YOU DO NOT NEED TO MODIFY THIS FUNCTION  *************
-
         For fixed-depth search, this function simply wraps the call to the
         minimax method, but this method provides a common interface for all
         Isolation agents, and you will replace it in the AlphaBetaPlayer with
@@ -176,16 +174,7 @@ class MinimaxPlayer(IsolationPlayer):
 
 
     def minimax(self, game, depth):
-        """Implement depth-limited minimax search algorithm as described in
-        the lectures.
-
-        This should be a modified version of MINIMAX-DECISION in the AIMA text.
-        https://github.com/aimacode/aima-pseudocode/blob/master/md/Minimax-Decision.md
-
-        **********************************************************************
-            You MAY add additional methods to this class, or define helper
-                 functions to implement the required functionality.
-        **********************************************************************
+        """
 
         Parameters
         ----------
@@ -203,16 +192,6 @@ class MinimaxPlayer(IsolationPlayer):
             The board coordinates of the best move found in the current search;
             (-1, -1) if there are no legal moves
 
-        Notes
-        -----
-            (1) You MUST use the `self.score()` method for board evaluation
-                to pass the project tests; you cannot call any other evaluation
-                function directly.
-
-            (2) If you use any helper functions (e.g., as shown in the AIMA
-                pseudocode) then you must copy the timer check into the top of
-                each helper function or else your agent will timeout during
-                testing.
         """
 
         if self.time_left() < self.TIMER_THRESHOLD:
@@ -338,16 +317,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         return best_move
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
-        """Implement depth-limited minimax search with alpha-beta pruning as
-        described in the lectures.
-
-        This should be a modified version of ALPHA-BETA-SEARCH in the AIMA text
-        https://github.com/aimacode/aima-pseudocode/blob/master/md/Alpha-Beta-Search.md
-
-        **********************************************************************
-            You MAY add additional methods to this class, or define helper
-                 functions to implement the required functionality.
-        **********************************************************************
+        """
 
         Parameters
         ----------
@@ -371,16 +341,6 @@ class AlphaBetaPlayer(IsolationPlayer):
             The board coordinates of the best move found in the current search;
             (-1, -1) if there are no legal moves
 
-        Notes
-        -----
-            (1) You MUST use the `self.score()` method for board evaluation
-                to pass the project tests; you cannot call any other evaluation
-                function directly.
-
-            (2) If you use any helper functions (e.g., as shown in the AIMA
-                pseudocode) then you must copy the timer check into the top of
-                each helper function or else your agent will timeout during
-                testing.
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
@@ -402,10 +362,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         return current_best_move
 
     def min_value(self, game, depth, alpha, beta):
-        """ Return the value for a win (inf) if the game is over,
-        otherwise return the minimum value over all legal child
-        nodes.
-        """
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
@@ -423,10 +380,6 @@ class AlphaBetaPlayer(IsolationPlayer):
         return v
 
     def max_value(self, game, depth, alpha, beta):
-        """ Return the value for a loss (-inf) if the game is over,
-        otherwise return the maximum value over all legal child
-        nodes.
-        """
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
