@@ -212,10 +212,7 @@ class MinimaxPlayer(IsolationPlayer):
 
 
     def min_value(self, game, depth):
-        """ Return the value for a win (inf) if the game is over,
-        otherwise return the minimum value over all legal child
-        nodes.
-        """
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
@@ -234,10 +231,6 @@ class MinimaxPlayer(IsolationPlayer):
 
 
     def max_value(self, game, depth):
-        """ Return the value for a loss (-inf) if the game is over,
-        otherwise return the maximum value over all legal child
-        nodes.
-        """
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
@@ -295,9 +288,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         best_move = (-1, -1)
 
         try:
-
             depth = 1
-
             while True:
                 best_move = self.alphabeta(game, depth)
                 depth += 1
