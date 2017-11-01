@@ -156,21 +156,13 @@ class MinimaxPlayer(IsolationPlayer):
             (-1, -1) if there are no available legal moves.
         """
         self.time_left = time_left
-
-        # Initialize the best move so that this function returns something
-        # in case the search fails due to timeout
         best_move = (-1, -1)
 
         try:
-            # The try/except block will automatically catch the exception
-            # raised when the timer is about to expire.
             return self.minimax(game, self.search_depth)
 
-        except SearchTimeout:
-            pass  # Handle any actions required after timeout as needed
-
-        # Return the best move from the last completed search iteration
-        return best_move
+        finally:
+            return best_move
 
 
     def minimax(self, game, depth):
@@ -307,13 +299,12 @@ class AlphaBetaPlayer(IsolationPlayer):
             depth = 1
 
             while True:
-                best_move, v = self.alphabeta(game, depth)
+                best_move = self.alphabeta(game, depth)
                 depth += 1
 
-        except SearchTimeout:
-            pass  # Handle any actions required after timeout as needed
+        finally:
+            return best_move
 
-        return best_move
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
         """
