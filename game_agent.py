@@ -299,10 +299,12 @@ class AlphaBetaPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        current_best_move = (-1, -1)
+        legal_moves = game.get_legal_moves()
+
+        current_best_move = legal_moves[0]
         current_best_score = alpha
 
-        for action in game.get_legal_moves():
+        for action in legal_moves:
             v = max(current_best_score, self.min_value(game.forecast_move(action), depth-1, alpha, beta))
 
             if v > current_best_score:
