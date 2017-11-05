@@ -64,8 +64,10 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    f = float(own_moves - (1.5 * opp_moves))
+    return f
 
 
 def custom_score_3(game, player):
@@ -90,8 +92,10 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    f = float((0.5 * own_moves) -  opp_moves)
+    return f
 
 
 class IsolationPlayer:
@@ -342,12 +346,19 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         return current_best_move
 
-    def min_value(self, game, depth, alpha, beta):
+    def cut_off(self, depth):
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
         if depth == 0:
+            return True
+
+        return False
+
+    def min_value(self, game, depth, alpha, beta):
+
+        if self.cut_off(depth):
             return self.score(game, self)
 
         v = float("inf")
@@ -362,10 +373,7 @@ class AlphaBetaPlayer(IsolationPlayer):
 
     def max_value(self, game, depth, alpha, beta):
 
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-
-        if depth == 0:
+        if self.cut_off(depth):
             return self.score(game, self)
 
         v = float("-inf")
