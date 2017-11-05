@@ -296,6 +296,16 @@ class AlphaBetaPlayer(IsolationPlayer):
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
 
+        """
+        Implementation of the minimax algorithm with alpha-beta pruning with iterative deepening
+
+        :param game: the game predict next move from
+        :param depth: current depth
+        :param alpha: current alpha - initialized to -inf
+        :param beta: current beta - initialized to inf
+        :return: best move found using alpha-beta pruning
+        """
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
