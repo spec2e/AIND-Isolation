@@ -102,7 +102,8 @@ def aggressive_improved_score(game, player):
     #move_count_factor = 1 / game.move_count
 
     #return float((own_moves - (2 * opp_moves)) * move_count_factor)
-    return float(own_moves - opp_moves)
+    return float((2 * own_moves) - ( opp_moves))
+    #return float(own_moves - opp_moves)
 
 
 
@@ -205,6 +206,7 @@ class MinimaxPlayer(IsolationPlayer):
     """
 
     def get_move(self, game, time_left):
+
         """Search for the best move from the available legal moves and return a
         result before the time limit expires.
 
@@ -236,8 +238,11 @@ class MinimaxPlayer(IsolationPlayer):
         try:
             return self.minimax(game, self.search_depth)
 
-        finally:
-            return best_move
+        except SearchTimeout:
+            pass  # Handle any actions required after timeout as needed
+
+        # Return the best move from the last completed search iteration
+        return best_move
 
 
     def minimax(self, game, depth):
