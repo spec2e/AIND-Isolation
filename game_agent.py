@@ -38,7 +38,6 @@ def custom_score(game, player):
 
     imp_score = plain_improved_score(game, player=player)
 
-    #centr_score = center_score(game, player)
     op_m_score = open_move_score(game, player) * 2
 
     return imp_score + op_m_score
@@ -208,31 +207,6 @@ class MinimaxPlayer(IsolationPlayer):
 
     def get_move(self, game, time_left):
 
-        """Search for the best move from the available legal moves and return a
-        result before the time limit expires.
-
-        For fixed-depth search, this function simply wraps the call to the
-        minimax method, but this method provides a common interface for all
-        Isolation agents, and you will replace it in the AlphaBetaPlayer with
-        iterative deepening search.
-
-        Parameters
-        ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
-            game (e.g., player locations and blocked cells).
-
-        time_left : callable
-            A function that returns the number of milliseconds left in the
-            current turn. Returning with any less than 0 ms remaining forfeits
-            the game.
-
-        Returns
-        -------
-        (int, int)
-            Board coordinates corresponding to a legal move; may return
-            (-1, -1) if there are no available legal moves.
-        """
         self.time_left = time_left
         best_move = (-1, -1)
 
@@ -245,39 +219,19 @@ class MinimaxPlayer(IsolationPlayer):
         # Return the best move from the last completed search iteration
         return best_move
 
-
     def minimax(self, game, depth):
-        """
-
-        Parameters
-        ----------
-        game : isolation.Board
-            An instance of the Isolation game `Board` class representing the
-            current game state
-
-        depth : int
-            Depth is an integer representing the maximum number of plies to
-            search in the game tree before aborting
-
-        Returns
-        -------
-        (int, int)
-            The board coordinates of the best move found in the current search;
-            (-1, -1) if there are no legal moves
-
-        """
 
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
         current_best = float("-inf")
-        current_best_move = None
+        current_best_move = (-1, -1)
 
-        for action in game.get_legal_moves():
+        for idx, action in enumerate(game.get_legal_moves()):
 
             v = self.min_value(game.forecast_move(action), depth -1)
 
-            if v > current_best:
+            if v >= current_best:
                 current_best = v
                 current_best_move = action
 
@@ -291,7 +245,7 @@ class MinimaxPlayer(IsolationPlayer):
         if depth == 0:
             return True
 
-        return not bool(game.get_legal_moves())
+        return False
 
     def min_value(self, game, depth):
 
@@ -324,35 +278,7 @@ class AlphaBetaPlayer(IsolationPlayer):
     """
 
     def get_move(self, game, time_left):
-        """Search for the best move from the available legal moves and return a
-        result before the time limit expires.
 
-        Modify the get_move() method from the MinimaxPlayer class to implement
-        iterative deepening search instead of fixed-depth search.
-
-        **********************************************************************
-        NOTE: If time_left() < 0 when this function returns, the agent will
-              forfeit the game due to timeout. You must return _before_ the
-              timer reaches 0.
-        **********************************************************************
-
-        Parameters
-        ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
-            game (e.g., player locations and blocked cells).
-
-        time_left : callable
-            A function that returns the number of milliseconds left in the
-            current turn. Returning with any less than 0 ms remaining forfeits
-            the game.
-
-        Returns
-        -------
-        (int, int)
-            Board coordinates corresponding to a legal move; may return
-            (-1, -1) if there are no available legal moves.
-        """
         self.time_left = time_left
         best_move = (-1, -1)
 
@@ -370,40 +296,18 @@ class AlphaBetaPlayer(IsolationPlayer):
 
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
-        """
 
-        Parameters
-        ----------
-        game : isolation.Board
-            An instance of the Isolation game `Board` class representing the
-            current game state
-
-        depth : int
-            Depth is an integer representing the maximum number of plies to
-            search in the game tree before aborting
-
-        alpha : float
-            Alpha limits the lower bound of search on minimizing layers
-
-        beta : float
-            Beta limits the upper bound of search on maximizing layers
-
-        Returns
-        -------
-        (int, int)
-            The board coordinates of the best move found in the current search;
-            (-1, -1) if there are no legal moves
-
-        """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
         current_best_move = (-1, -1)
+        current_best_score = alpha
 
         for action in game.get_legal_moves():
             v = self.min_value(game.forecast_move(action), depth -1, alpha=alpha, beta=beta)
 
-            if v > alpha:
+            if v >= current_best_score:
+                current_best_score = v
                 current_best_move = action
 
             alpha = max(v, alpha)
