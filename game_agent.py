@@ -35,8 +35,8 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    return aggressive_improved_score(game, player=player)
-    #return 0.0
+    return plain_improved_score(game, player=player)
+
 
 
 def custom_score_2(game, player):
@@ -61,7 +61,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return open_move_score(game, player)
+    return decrease_blocking_improved_score(game, player)
 
 
 def custom_score_3(game, player):
@@ -86,10 +86,39 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return center_score(game, player)
+    return blocking_improved_score(game, player)
 
 
-def aggressive_improved_score(game, player):
+def plain_improved_score(game, player):
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    return float(own_moves - opp_moves)
+
+
+def blocking_improved_score(game, player):
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    return float(own_moves - (2 * opp_moves))
+
+
+def decrease_blocking_improved_score(game, player):
+
     if game.is_loser(player):
         return float("-inf")
 
@@ -102,72 +131,6 @@ def aggressive_improved_score(game, player):
     move_count_factor = 1 / game.move_count
 
     return float((own_moves - (2 * opp_moves)) * move_count_factor)
-    #return float((2 * own_moves) - ( opp_moves))
-    #return float(own_moves - opp_moves)
-
-
-
-def center_score(game, player):
-    """Outputs a score equal to square of the distance from the center of the
-    board to the position of the player.
-
-    This heuristic is only used by the autograder for testing.
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : hashable
-        One of the objects registered by the game object as a valid player.
-        (i.e., `player` should be either game.__player_1__ or
-        game.__player_2__).
-
-    Returns
-    ----------
-    float
-        The heuristic value of the current game state
-    """
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    w, h = game.width / 2., game.height / 2.
-    y, x = game.get_player_location(player)
-    return float((h - y)**2 + (w - x)**2)
-
-
-def open_move_score(game, player):
-    """The basic evaluation function described in lecture that outputs a score
-    equal to the number of moves open for your computer player on the board.
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : hashable
-        One of the objects registered by the game object as a valid player.
-        (i.e., `player` should be either game.__player_1__ or
-        game.__player_2__).
-
-    Returns
-    ----------
-    float
-        The heuristic value of the current game state
-    """
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    return float(len(game.get_legal_moves(player)))
-
 
 
 class IsolationPlayer:
