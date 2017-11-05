@@ -35,7 +35,7 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    return improved_score(game, player=player)
+    return aggressive_improved_score(game, player=player)
 
 
 
@@ -89,7 +89,7 @@ def custom_score_3(game, player):
     return center_score(game, player)
 
 
-def improved_score(game, player):
+def aggressive_improved_score(game, player):
     if game.is_loser(player):
         return float("-inf")
 
