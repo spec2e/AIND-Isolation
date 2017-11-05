@@ -36,7 +36,7 @@ def custom_score(game, player):
     """
 
     return aggressive_improved_score(game, player=player)
-
+    #return 0.0
 
 
 def custom_score_2(game, player):
@@ -98,8 +98,12 @@ def aggressive_improved_score(game, player):
 
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    f = float(own_moves - (2 * opp_moves))
-    return f
+
+    #move_count_factor = 1 / game.move_count
+
+    #return float((own_moves - (2 * opp_moves)) * move_count_factor)
+    return float(own_moves - opp_moves)
+
 
 
 def center_score(game, player):
