@@ -99,10 +99,10 @@ def aggressive_improved_score(game, player):
     own_moves = len(game.get_legal_moves(player))
     opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
 
-    #move_count_factor = 1 / game.move_count
+    move_count_factor = 1 / game.move_count
 
-    #return float((own_moves - (2 * opp_moves)) * move_count_factor)
-    return float((2 * own_moves) - ( opp_moves))
+    return float((own_moves - (2 * opp_moves)) * move_count_factor)
+    #return float((2 * own_moves) - ( opp_moves))
     #return float(own_moves - opp_moves)
 
 
