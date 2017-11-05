@@ -294,7 +294,6 @@ class AlphaBetaPlayer(IsolationPlayer):
         finally:
             return best_move
 
-
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
 
         if self.time_left() < self.TIMER_THRESHOLD:
@@ -304,9 +303,9 @@ class AlphaBetaPlayer(IsolationPlayer):
         current_best_score = alpha
 
         for action in game.get_legal_moves():
-            v = self.min_value(game.forecast_move(action), depth -1, alpha=alpha, beta=beta)
+            v = max(current_best_score, self.min_value(game.forecast_move(action), depth-1, alpha, beta))
 
-            if v >= current_best_score:
+            if v > current_best_score:
                 current_best_score = v
                 current_best_move = action
 
@@ -326,30 +325,33 @@ class AlphaBetaPlayer(IsolationPlayer):
 
     def min_value(self, game, depth, alpha, beta):
 
+        v = float("inf")
+
         if self.cut_off(depth):
             return self.score(game, self)
-
-        v = float("inf")
 
         for action in game.get_legal_moves():
             v = min(v, self.max_value(game.forecast_move(action), depth -1, alpha, beta))
             if v <= alpha:
                 return v
-            beta = min(beta, v)
+
+            beta = min(v, beta)
 
         return v
 
     def max_value(self, game, depth, alpha, beta):
 
+        v = float("-inf")
+
         if self.cut_off(depth):
             return self.score(game, self)
 
-        v = float("-inf")
         for action in game.get_legal_moves():
             v = max(v, self.min_value(game.forecast_move(action), depth -1, alpha, beta))
             if v >= beta:
                 return v
-            alpha = max(alpha, v)
+
+            alpha = max(v, alpha)
 
         return v
 
