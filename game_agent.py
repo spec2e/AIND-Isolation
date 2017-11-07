@@ -22,20 +22,14 @@ def custom_score_3(game, player):
     return blocking_improved_score(game, player)
 
 
-def plain_improved_score(game, player):
+def increase_blocking_improved_score(game, player):
 
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    own_moves = game.get_legal_moves(player)
+    opp_moves = game.get_legal_moves(game.get_opponent(player))
 
-    return float(own_moves - opp_moves)
+    move_count_factor = 0.01 * game.move_count
 
-
-def blocking_improved_score(game, player):
-
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-
-    return float(own_moves - (2 * opp_moves))
+    return float((len(own_moves) - (2 * len(opp_moves))) * move_count_factor)
 
 
 def decrease_blocking_improved_score(game, player):
@@ -48,19 +42,26 @@ def decrease_blocking_improved_score(game, player):
     return float((len(own_moves) - (2 * len(opp_moves))) * move_count_factor)
 
 
-def increase_blocking_improved_score(game, player):
+def blocking_improved_score(game, player):
 
-    own_moves = game.get_legal_moves(player)
-    opp_moves = game.get_legal_moves(game.get_opponent(player))
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
 
-    move_count_factor = 0.2 * game.move_count
+    return float(own_moves - (2 * opp_moves))
 
-    return float((len(own_moves) - (2 * len(opp_moves))) * move_count_factor)
+
+def plain_improved_score(game, player):
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    return float(own_moves - opp_moves)
 
 
 def open_move_score(game, player):
 
     return float(len(game.get_legal_moves(player)))
+
 
 class IsolationPlayer:
     """Base class for minimax and alphabeta agents -- this class is never
