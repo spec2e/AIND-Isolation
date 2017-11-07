@@ -54,19 +54,6 @@ def blocking_improved_score(game, player):
     return float(own_moves - (2 * opp_moves))
 
 
-def plain_improved_score(game, player):
-
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-
-    return float(own_moves - opp_moves)
-
-
-def open_move_score(game, player):
-
-    return float(len(game.get_legal_moves(player)))
-
-
 class IsolationPlayer:
     """Base class for minimax and alphabeta agents -- this class is never
     constructed or tested directly.
