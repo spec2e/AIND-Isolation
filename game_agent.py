@@ -29,7 +29,7 @@ def increase_blocking_improved_score(game, player):
 
     move_count_factor = 0.01 * game.move_count
 
-    return float((len(own_moves) - (2 * len(opp_moves))) * move_count_factor)
+    return float((len(own_moves) - (len(opp_moves))) + move_count_factor)
 
 
 def decrease_blocking_improved_score(game, player):
@@ -39,7 +39,7 @@ def decrease_blocking_improved_score(game, player):
 
     move_count_factor = 10 / game.move_count
 
-    return float((len(own_moves) - (2 * len(opp_moves))) * move_count_factor)
+    return float((len(own_moves) - (2 * len(opp_moves))) - move_count_factor)
 
 
 def blocking_improved_score(game, player):
