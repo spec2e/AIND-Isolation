@@ -37,7 +37,7 @@ def decrease_blocking_improved_score(game, player):
     own_moves = game.get_legal_moves(player)
     opp_moves = game.get_legal_moves(game.get_opponent(player))
 
-    move_count_factor = 10 / game.move_count
+    move_count_factor = 2 * game.move_count
 
     return float((len(own_moves) - (2 * len(opp_moves))) - move_count_factor)
 
