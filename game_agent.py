@@ -11,7 +11,8 @@ class SearchTimeout(Exception):
 
 
 def custom_score(game, player):
-    return increase_blocking_improved_score(game, player)
+    #return increase_blocking_improved_score(game, player)
+    return weighted_score(game, player)
 
 
 def custom_score_2(game, player):
@@ -20,6 +21,22 @@ def custom_score_2(game, player):
 
 def custom_score_3(game, player):
     return blocking_improved_score(game, player)
+
+
+def weighted_score(game, player):
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    max_blanks = game.width ** 2
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    blanks = len(game.get_blank_spaces())
+
+    return float((max_blanks - blanks) * own_moves - blanks * opp_moves)
 
 
 def increase_blocking_improved_score(game, player):
