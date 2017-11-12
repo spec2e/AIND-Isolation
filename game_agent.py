@@ -18,7 +18,7 @@ def custom_score(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    return blanks_weighted(game, player)
+    return blocking_improved_score(game, player)
 
 
 def custom_score_2(game, player):
@@ -40,18 +40,7 @@ def custom_score_3(game, player):
     if game.is_winner(player):
         return float("inf")
 
-    return blocking_improved_score(game, player)
-
-
-def blanks_weighted(game, player):
-
-    max_blanks = game.width ** 2
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-
-    blanks = len(game.get_blank_spaces())
-
-    return float((max_blanks - blanks) * own_moves - blanks * opp_moves)
+    return increase_blocking_improved_score(game, player)
 
 
 def increase_blocking_improved_score(game, player):
