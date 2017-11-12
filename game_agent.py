@@ -43,19 +43,26 @@ def custom_score_3(game, player):
     return increase_blocking_improved_score(game, player)
 
 
-def increase_blocking_improved_score(game, player):
+def blocking_improved_score(game, player):
 
-    own_moves = game.get_legal_moves(player)
-    opp_moves = game.get_legal_moves(game.get_opponent(player))
+    """
+    This algorithm will select the moves that returns most moves compared to the opponent.
+    By setting the weight to 2, we assure a rather aggressive defense.
+    """
 
-    move_count_factor = 0.5 * game.move_count
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
 
-    blocking_factor = (len(opp_moves) + move_count_factor)
-
-    return float((len(own_moves) - blocking_factor))
+    return float(own_moves - (2 * opp_moves))
 
 
 def decrease_blocking_improved_score(game, player):
+
+    """
+    This algorithm will start out with aggressive blocking and then turn it down as the
+    number of moves in the game increases. The thought is that as the game progresses there
+    will become fewer legal moves and therefore the blocking effect should become smaller and smaller.
+    """
 
     own_moves = game.get_legal_moves(player)
     opp_moves = game.get_legal_moves(game.get_opponent(player))
@@ -67,12 +74,22 @@ def decrease_blocking_improved_score(game, player):
     return float((len(own_moves) - blocking_factor))
 
 
-def blocking_improved_score(game, player):
+def increase_blocking_improved_score(game, player):
 
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    """
+    This algorithm will start out seeking the most valuable moves for the player.
+    As the game progresses and the number of moves increases, it will increase a
+    blocking effect.
+    """
 
-    return float(own_moves - (2 * opp_moves))
+    own_moves = game.get_legal_moves(player)
+    opp_moves = game.get_legal_moves(game.get_opponent(player))
+
+    move_count_factor = 0.5 * game.move_count
+
+    blocking_factor = (len(opp_moves) + move_count_factor)
+
+    return float((len(own_moves) - blocking_factor))
 
 
 class IsolationPlayer:
